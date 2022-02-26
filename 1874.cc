@@ -25,13 +25,13 @@ int main(){
       result += '-';
     }
       
-    else{ //ex. turn이 5인데 size가 5일때
+    else{ //ex. turn이 3인데 size가 4일때
       bool found = false;
       if(!s.empty()){
         int top = s.top();
         s.pop();
         result += '-';
-        if(turn == top){
+        if(turn == top){ //turn<=m일 때는 스택의 top과 turn이 같을 때에만 가능함
           found = true;
         }
       }
