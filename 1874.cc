@@ -10,7 +10,7 @@ int main(){
   int n;
   cin >> n;
 
-  int m = 0; //스택에 들어간 마지막 수
+  int m = 0; //스택에 들어온 혹은 들어왔던 마지막 수
   int turn = 0; //이번에 뽑힌 수
   
   while(n--){
