@@ -62,11 +62,11 @@ int main(){
         }
         else if(cmd == "pop"){
             cout << s.pop() << '\n';
-	    //¹éÁØÀº cout << (s.empty() ? -1 : s.top()) << '\n'; if (!s.empty()) {s.pop(); } ¶ó°í Çß´Âµ¥ ±»ÀÌ?
+	    //ë°±ì¤€ì€ cout << (s.empty() ? -1 : s.top()) << '\n'; if (!s.empty()) {s.pop(); } ë¼ê³  í–ˆëŠ”ë° êµ³ì´?
         }
         else if(cmd == "top"){
             cout << s.top() << '\n';
-	    //¹éÁØÀº cout << (s.empty() ? -1 : s.top()) << '\n'; ÀÌ·¸°Ô Çß´Âµ¥ ±»ÀÌ¶ó´Â »ý°¢ÀÌ µê
+	    //ë°±ì¤€ì€ cout << (s.empty() ? -1 : s.top()) << '\n'; ì´ë ‡ê²Œ í–ˆëŠ”ë° êµ³ì´ë¼ëŠ” ìƒê°ì´ ë“¦
         }
         else if(cmd == "size"){
             cout << s.size << '\n';
