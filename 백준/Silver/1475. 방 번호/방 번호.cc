@@ -19,15 +19,11 @@ int main() {
 	//6,9에 필요한 세트의 개수가 나옴
 	arr[6] = (arr[6] + arr[9]) / 2 + (arr[6] + arr[9]) % 2; 
 
-	int max = -1, maxIdx=-1;
+	int max = -1;
 	for (int i = 0; i < 10; i++) {
 		if (i != 9) { //arr[9]는 이미 계산되어 arr[6]에 저장함
-			if (max < arr[i]) {
-				max = arr[i];
-				maxIdx = i;
-			}
+			if (max < arr[i]) max = arr[i];
 		}
-		
 	}
 	
 	cout << max;
