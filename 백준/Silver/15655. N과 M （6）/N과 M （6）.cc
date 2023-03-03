@@ -2,48 +2,35 @@
 #include <algorithm>
 using namespace std;
 
-int arr[10];
-int input[10];
-bool isused[10];
-int n, m;
-
-void func(int k) {
-	if (k == m) { //모든 수를 다 넣은 경우이므로 끝임 
-		for (int i = 0; i < m; i++) {
-			cout << input[arr[i]] << " ";
-		}
-		cout << '\n';
-		return;
-	}
-
-	int st = 0;
-	if (k != 0) st = arr[k - 1] + 1;
-
-	for (int i = st; i < n; i++) {
-		if (!isused[i]) {
-			arr[k] = i; //저장될 input의 인덱스를 arr에 저장함
-			isused[i] = 1;
-			func(k + 1);
-			isused[i] = 0;
-		}
-	}
-}
+int arr[10]; //4 2라면 0,0,1,1로 채워둠
+int num[10]; //수를 입력받음 
 
 int main() {
 	//freopen("input.txt", "r", stdin);
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 
+	int n, m;
 	cin >> n >> m;
 
-	for (int i = 0; i < n; i++) {
-		cin >> input[i];
-	}
+	//입력받고 오름차순으로 정렬해줌
+	for (int i = 0; i < n; i++) cin >> num[i];
+	sort(num, num + n);
 
-	//input배열 정렬해줘야함 
-	sort(input, input + n);
+	//우선, arr배열을 모두 1로 채움
+	for (int i = 0; i < n; i++) arr[i] = 1;
+	//앞에 m개만 0으로 채움
+	for (int i = 0; i < m; i++) arr[i] = 0;
 
-	func(0);
+	//조합 만들기
+	do {
+		for (int i = 0; i < n; i++) {
+			if(!arr[i])
+				cout << num[i] << " ";
+			
+		}
+		cout << '\n';
+	} while (next_permutation(arr,arr+n));
 
 	return 0;
 }
