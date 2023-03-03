@@ -1,33 +1,33 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
-constexpr int N = 9;
-int n, m;
-int result[N];
-bool visited[N];
+int arr[10];
 
-void dfs(int level, int prev){
-    if(level==m){
-        for(int i=0; i<m; i++){
-            cout << result[i] << ' ';
-        }
-        cout << '\n';
-        return;
-    }
+int main() {
+	//freopen("input.txt", "r", stdin);
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 
-    for(int i=level; i<=n; i++){
-        if(prev<i){
-            visited[i] = 1;
-            result[level] = i;
-            dfs(level+1, i);
-            visited[i] = 0; 
-        }
-        
-    }
-}
-int main(){
-    cin >> n >> m;
-    dfs(0,0);
+	int n, m;
+	cin >> n >> m;
 
-    return 0;
+	//우선, 1로 채워놓기
+	fill(arr, arr + n, 1);
+
+	//그 다음 m개만큼 앞에 0으로 채우기
+	for (int i = 0; i < m; i++) {
+		arr[i] = 0;
+	}
+
+	//조합 만들기
+	do {
+		for (int i = 0; i < n; i++) {
+			if(arr[i]==0)
+				cout << i+1 << " ";
+		}
+		cout << '\n';
+	} while (next_permutation(arr,arr+n));
+
+	return 0;
 }
