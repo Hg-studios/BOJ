@@ -1,29 +1,25 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
-int d[1001] = { 0 };
-
-//d[n]은 2xn을 채우는 방법의 수
-int go(int n){
-  //일단 1이면 방법이 하나밖에 없으니깐 1
-  if(n==1) return 1;
-  //길이가 2면 방법이 2개니깐 2
-  if(n==2) return 2;
-
-  //이미 그 값이 저장돼 있는 경우 그 값을 씀
-  if(d[n]>0) return d[n];
-  //d[n]값은 go(n-1)+go(n-2)임
-  d[n] = go(n-1)+go(n-2);
-  d[n]%=10007;
-
-  return d[n];
-}
+//d[i] : i번째 타일을 채우는 방법의 수
+int d[1001];
 
 int main(){
-  int n;
-  cin >> n;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-  cout << go(n) % 10007 << '\n';
-  
-  return 0;
+    int n; cin>>n;
+
+    //초기값 설정
+    d[1] = 1; 
+    d[2] = 2;
+
+    for(int i=3; i<=n ;i++){
+        d[i] = (d[i-1] + d[i-2]) % 10007;
+    }
+
+    cout << d[n];
+
+    return 0;
 }
