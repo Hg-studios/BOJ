@@ -6,7 +6,7 @@ using namespace std;
 #define Y second 
 
 int n;
-int ans=1; //아무지역도 물에 잠기지 않을 수 있기 때문에 최소 안전 영역은 1로 둠
+int ans;
 int area[102][102];
 bool visited[102][102];
 
@@ -55,19 +55,18 @@ int main(){
     cin.tie(0);
 
     //1~100값을 모두 볼 필요가 없음
-    //최소높이와 최대높이만 구해서 그 범위에서만 검사하면 됨
-    int maxH=0, minH=999; 
+    //최대높이를 구해서 그 범위에서만 검사하면 됨
+    int maxH=0; 
 
     cin>>n;
     for(int i=0; i<n; i++){
         for(int j=0; j<n; j++){
             cin>>area[i][j];
             maxH=max(maxH, area[i][j]);
-            minH=min(minH, area[i][j]);
         }
     }
     
-    for(int i=minH; i<=maxH; i++){
+    for(int i=0; i<=maxH; i++){
         BFS(i);
     }
 
