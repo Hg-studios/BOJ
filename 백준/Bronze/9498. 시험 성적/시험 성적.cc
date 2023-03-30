@@ -2,7 +2,6 @@
 using namespace std;
 
 int main() {
-	//freopen("input.txt", "r", stdin);
 	int s; cin >> s;
 	
 	if (s >= 90 && s <= 100) cout << "A";
