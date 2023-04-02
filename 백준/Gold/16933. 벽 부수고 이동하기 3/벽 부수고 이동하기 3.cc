@@ -30,22 +30,26 @@ int BFS(){
             if(nx<0||nx>=n||ny<0||ny>=m) continue;
 
             //벽을 만난 경우
-            //방문한 적이 없어야 함 
-            if(area[nx][ny]=='1' && dist[1-curD][curK+1][nx][ny]==0){
-                //벽을 부술 수 있으면서 낮인 경우 
-                if(curK<k && curD){
-                   dist[1-curD][curK+1][nx][ny]=dist[curD][curK][curX][curY]+1;
-                   q.push({1-curD,curK+1,nx,ny});
+            if(area[nx][ny]=='1'){
+                //이미 k번 깼으면 더이상 깰 수 없음 
+                if(curK>=k) continue;
+
+                //낮인 경우 
+                if(curD){
+                    if(dist[1-curD][curK+1][nx][ny]!=0) continue;
+                    dist[1-curD][curK+1][nx][ny]=dist[curD][curK][curX][curY]+1;
+                    q.push({1-curD,curK+1,nx,ny});
                 }
-                //벽을 부술 수 있지만 밤이면 기다리면 됨
-                else if(curK<k && !curD){
+                //밤이면 기다리면 됨
+                else{
+                    if(dist[1-curD][curK][curX][curY]!=0) continue;
                     dist[1-curD][curK][curX][curY]=dist[curD][curK][curX][curY]+1;
                     q.push({1-curD,curK,curX,curY});
                 }
             }
             //벽이 아닌 경우 (그냥 가면 됨)
-            //방문한 적이 없어야 함
-            else if(area[nx][ny]=='0' && dist[1-curD][curK][nx][ny]==0){
+            else if(area[nx][ny]=='0'){
+                if(dist[1-curD][curK][nx][ny]!=0) continue;
                 dist[1-curD][curK][nx][ny]=dist[curD][curK][curX][curY]+1;
                 q.push({1-curD,curK,nx,ny});
             }
