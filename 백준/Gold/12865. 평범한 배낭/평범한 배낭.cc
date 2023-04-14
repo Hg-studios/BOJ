@@ -1,43 +1,30 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
-int N, K;
-int W[100];
-int V[100];
-int dp[101][101010];
+int n, k;
+int w[105];
+int v[105];
+int d[105][100005]; //d[a][b]=k : a번 물건까지 왔고 가방의 무게가 b일 때 가방에 담긴 물건의 가치가 c
 
-int go(int i, int w) { //i번째 물건, 현재까지의 무게w
-	//top-down방식
-	//i번째 물건까지 검사했을 때 무게는 w이고 go함수의 반환값이 가치값
-	
-	if (i == N) return 0; //1. 재귀 break condition
-	if (dp[i][w] > 0) return dp[i][w]; //2. 배열에 저장된 값이 있으면 리턴
-	
-	//3. 저장된 값이 없다면, 값 구하기 위한 점화식 세우기
-	//i번째 물건을 포함시키거나(n1) 미포함시키거나(n2)
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-	//n1을 꼭 0으로 초기화해줘야함
-	//n1이 if문으로 들어가지 않으면 쓰레기값이 들어가게 되고 그 n1과 n2 max 비교함
-	int n1=0,n2; 
+    cin>>n>>k;
+    for(int i=1; i<=n; i++) cin>>w[i]>>v[i];
 
-	if (w + W[i] <= K) n1 = V[i] + go(i + 1, w + W[i]); //포함
-	n2 = go(i + 1, w); //미포함
+    for(int i=1; i<=n; i++){ //배낭에 넣을 물건 번호
+        for(int j=1; j<=k; j++){ //현재 배낭의 무게 
+            //가방에 이번 물건을 넣을 수 있는 경우
+            //기존에 탐색했던 물건들로만 무게j를 만드는 경우와
+            //기존에 탐색했던 물건들로는 무게j-w[i]를 만들고, 현재 물건을 가방에 넣는 경우 중 큰 값 선택
+            //즉, 현재 물건을 넣을지 말지를 판단해줘야 함
+            if(j-w[i]>=0) d[i][j] = max(d[i-1][j], d[i-1][j-w[i]]+v[i]);
+            //가방에 이번 물건을 넣을 수 없는 경우 
+            else d[i][j] = d[i-1][j];
+        }
+    }
 
-	return dp[i][w] = max(n1, n2);
-}
-
-int main() {
-	//freopen("input.txt", "r", stdin);
-	
-	cin >> N >> K;
-
-	for (int i = 0; i < N; i++) {
-		cin>> W[i] >> V[i];
-	}
-
-	cout << go(0, 0);
-
-	return 0;
+    cout<<d[n][k]<<'\n';
 }
