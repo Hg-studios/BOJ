@@ -103,13 +103,6 @@ void rot(int num, int dir) {
         d[0] = d[2] = -1 / dir;
     }
 
-    // for (int i = 0; i < 4; i++) {
-    //     for (int j = 0; j < v[i].size(); j++) {
-    //             cout << v[i][j];
-    //     }
-    //     cout << '\n';
-    // }
-    // cout << '\n';
     //w1~w4 중 회전가능한 바퀴를 회전시켜줌
     //시계방향 회전 - 맨뒤에 있는 원소를 빼서 맨앞으로 넣어줌
     //반시계방향 회전 - 맨앞에 있는 원소를 빼서 맨뒤에 넣어줌
@@ -128,16 +121,6 @@ void rot(int num, int dir) {
             }
         }
     }
-
-// cout<<"K: "<<k<<'\n';
-//     for (int i = 0; i < 4; i++) {
-//         for (int j = 0; j < v[i].size(); j++) {
-//             cout << v[i][j];
-//         }
-//         cout << '\n';
-//     }
-//     cout << '\n';
-
 }
 
 int score() {
