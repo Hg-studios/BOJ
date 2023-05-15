@@ -64,13 +64,7 @@ int main(int argc, char** argv)
         	for(int j=i; j<i+t.size(); j++){
             	tmp+=str[j];
             }
-            for(int j=0; j<t.size(); j++){
-            	if(tmp[j]!=t[j]) {
-                	isSame=0;
-                    break;
-                }
-            }
-            if(isSame) ans++;
+            if(tmp==t) ans++;
         }
         
         cout<<"#"<<test_case<<" "<<ans<<'\n';
