@@ -7,6 +7,7 @@ public class Main {
     int[] arr, select;
     boolean[] visited;
     int n,m;
+    BufferedWriter bw;
 
     public static void main(String[] args) throws IOException {
         new Main().solve();
@@ -15,6 +16,7 @@ public class Main {
     private void solve() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
@@ -30,21 +32,17 @@ public class Main {
 
         Arrays.sort(arr);
 
-//        for(int i=0; i<n; i++){
-//            System.out.println(arr[i]);
-//        }
-//        System.out.println(n+" "+m);
-
         recursive(0); //중복없는 순열
 
+        bw.close();
     }
 
-    public void recursive(int cnt){
+    public void recursive(int cnt) throws IOException {
         if(cnt==m){
             for (int i=0; i<m; i++){
-                System.out.print(select[i]+" ");
+                bw.write(select[i]+" ");
             }
-            System.out.println();
+            bw.write('\n');
             return;
         }
 
