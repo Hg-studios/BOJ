@@ -23,32 +23,29 @@ public class Main {
         r = Integer.parseInt(st.nextToken());
         c = Integer.parseInt(st.nextToken());
 
-        recursive(r,c,(int)Math.pow(2,n));
+        recursive(0,0,(int)Math.pow(2,n));
         System.out.println(ans);
     }
 
-    private static void recursive(int r, int c, int size) {
+    private static void recursive(int x, int y, int size) { //x,y는 시작점 r,c는 찾는점
         if(size==1) return;
 
         int half = size/2;
         //1사분면
-        if(r<half && c<half) {
-            recursive(r,c,half);
+        if(r<x+half && c<y+half){
+            recursive(x,y,half);
         }
-        //2사분면
-        else if(r<half && c>=half){
-            ans+=half*half;
-            recursive(r,c-half,half);
+        else if(r<x+half && c>=y+half){
+            ans+= half*half;
+            recursive(x, y+half, half);
         }
-        //3사분면
-        else if(r>=half && c<half){
-            ans+=2*half*half;
-            recursive(r-half, c, half);
+        else if(r>=x+half && c<y+half){
+            ans += 2*half*half;
+            recursive(x+half, y, half);
         }
-        //4시분면
-        else if(r>=half && c>=half){
-            ans+=3*half*half;
-            recursive(r-half, c-half, half);
+        else{
+            ans += 3*half*half;
+            recursive(x+half, y+half, half);
         }
     }
 }
