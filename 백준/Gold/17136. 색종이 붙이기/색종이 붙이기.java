@@ -21,19 +21,19 @@ public class Main {
         sb = new StringBuilder();
 
         //초기화
-        arr = new int[11][11];
+        arr = new int[10][10];
         colorPaper = new int[] {0,5,5,5,5,5};
 
         //입력받기
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 0; i < 10; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 1; j <= 10; j++) {
+            for (int j = 0; j < 10; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
         // 1인 부분을 찾으면 붙일 수 있는 최대크기 색종이부터 작은사이즈 순으로 백트래킹함
-        recursive(1,1,0); //x, y, cnt
+        recursive(0,0,0); //x, y, cnt
         if(ans==Integer.MAX_VALUE) System.out.println(-1);
         else System.out.println(ans);
     }
@@ -41,8 +41,8 @@ public class Main {
         //색종이를 붙일 수 있는 곳을 찾음
         boolean flag = false;
 
-        for(int i=1; i<=10; i++) {
-            for(int j=1; j<=10; j++) {
+        for(int i=0; i<10; i++) {
+            for(int j=0; j<10; j++) {
 
                 if(arr[i][j]==1) { //색종이가 붙어있다면
                     flag=true; //색종이 붙일 좌표를 찾았음을 표시함
@@ -65,29 +65,26 @@ public class Main {
                     if(arr[i][j]==1) return; //종이는 있지만 붙이지 못한 경우 ?? 이게 몬경우지??
 
                 }
-
-                //마지막 좌표까지 왔으면
-                //basis
-//                if(i>=10 && j>=10) { //색종이 끝까지 다 검사했으면 여태까지 쓴 종이 개수 비교해서 답 구하기
-//                    ans = Math.min(ans, cnt);
-//                    return;
-//                }
             }
-
-            //더이상 탐색할 곳이 없다면 return 해줘야 함
-            if(checkFinish()) {
-                ans = Math.min(ans, cnt);
-
-                return;
-            }
-
         }
-        if(!flag) return; //탐색 좌표가 없다면 return
+
+        //더이상 탐색할 곳이 없다면 return 해줘야 함
+//        if(checkFinish()) {
+//            ans = Math.min(ans, cnt);
+//
+//            return;
+//        }
+        if(!flag) {
+            ans = Math.min(ans, cnt);
+
+            return;
+        }
+        //if(!flag) return; //탐색 좌표가 없다면 return
 
     }
     private static boolean checkFinish() {
-        for(int i=1; i<=10; i++) {
-            for(int j=1; j<=10; j++) {
+        for(int i=0; i<10; i++) {
+            for(int j=0; j<10; j++) {
                 if(arr[i][j]==1) return false;
             }
         }
@@ -96,7 +93,7 @@ public class Main {
     private static void updatePaper(int x, int y, int size, int cond) { //x,y부터 size만큼 cond가 1이면 종이를 붙이고 cond가 0이면 종이가를 뗌
         for(int i=x; i<x+size; i++) {
             for(int j=y; j<y+size; j++) {
-                if(i>10 || j>10) continue;
+                if(i>=10 || j>=10) continue;
                 if(cond==1) {
                     arr[i][j]=1;
                 }
@@ -109,7 +106,7 @@ public class Main {
     private static boolean check(int x, int y, int size) {
         for(int i=x; i<x+size; i++) {
             for(int j=y; j<y+size; j++) {
-                if(i>10 || j>10) return false; //범위를 벗어남
+                if(i>=10 || j>=10) return false; //범위를 벗어남
                 if(arr[i][j]==0) return false; //색종이를 붙일 수 없음
             }
         }
