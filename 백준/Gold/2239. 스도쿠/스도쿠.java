@@ -11,6 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         br = new BufferedReader(new InputStreamReader(System.in));
+        sb = new StringBuilder();
 
         list = new ArrayList<>();
 
@@ -29,13 +30,14 @@ public class Main {
     private static void recursive(int cnt) {
         if(cnt==list.size()) {
             //출력하기
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    System.out.print(arr[i][j]);
+            for(int[] a : arr){
+                for(int b : a){
+                    sb.append(b);
                 }
-                System.out.println();
+                sb.append('\n');
             }
 
+            System.out.println(sb);
             System.exit(0); //return 대신 아예 프로그램 종료
         }
 
@@ -44,18 +46,25 @@ public class Main {
         int y = list.get(cnt)[1];
 
         boolean[] check = new boolean[10];
+//        checkR = new boolean[10];
+//        checkC = new boolean[10];
+//        checkB = new boolean[10];
         //check(x,y); //현재 arr의 상황을 체크함
         for (int k = 0; k < 9; k++) {
             //arr[i][k] : i번째 줄에 있는 칸의 값
+//            checkR[arr[i][k]] = true; //(i,j) 좌표의 세로 한 줄에 나온 수 체크
+//            checkC[arr[k][j]] = true; // 가로 한 줄에 나온 수 체크
             check[arr[x][k]] = true;
             check[arr[k][y]] = true;
         }
+
 
         //해당 3x3 한 칸 살펴보기
         int r = (x / 3) * 3;
         int c = (y / 3) * 3;
         for (int k = r; k < r + 3; k++) {
             for (int l = c; l < c + 3; l++) {
+//                checkB[arr[k][l]] = true;
                 check[arr[k][l]] = true;
             }
         }
@@ -69,5 +78,28 @@ public class Main {
             }
         }
     }
+
+//    private static void check(int i, int j) {
+//
+//
+//        //(i,j) 좌표의 세로와 세로 한 줄씩 살펴보기
+//        for (int k = 0; k < 9; k++) {
+//            //arr[i][k] : i번째 줄에 있는 칸의 값
+////            checkR[arr[i][k]] = true; //(i,j) 좌표의 세로 한 줄에 나온 수 체크
+////            checkC[arr[k][j]] = true; // 가로 한 줄에 나온 수 체크
+//            check[arr[i][k]] = true;
+//            check[arr[k][j]] = true;
+//        }
+//
+//        //해당 3x3 한 칸 살펴보기
+//        int r = (i / 3) * 3;
+//        int c = (j / 3) * 3;
+//        for (int k = r; k < r + 3; k++) {
+//            for (int l = c; l < c + 3; l++) {
+////                checkB[arr[k][l]] = true;
+//                check[arr[k][l]] = true;
+//            }
+//        }
+//    }
 }
 
