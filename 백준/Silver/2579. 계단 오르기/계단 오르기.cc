@@ -8,19 +8,15 @@ using namespace std;
 
 int n;
 int arr[MAX];
-int dp[MAX][3];
+int dp[MAX]; //dp[a]=b : a번째 계단까지의 최대값
 
 void solve() {
-    // 초기화
-    dp[1][1]=arr[1];
-    dp[1][2]=0;
-    dp[2][1]=arr[2];
-    dp[2][2]=arr[1]+arr[2];
+    dp[1] = arr[1];
+    dp[2] = arr[1]+arr[2];
+    dp[3] = max(arr[1], arr[2]) + arr[3];
     
-    // 완탐 시작
-    for(int i=3; i<=n; i++) {
-        dp[i][1] = max(dp[i-2][1], dp[i-2][2]) + arr[i];
-        dp[i][2] = dp[i-1][1] + arr[i];
+    for(int i=4; i<=n; i++) {
+        dp[i] = max(dp[i-2], dp[i-3]+arr[i-1]) + arr[i];
     }
 }
 
@@ -35,7 +31,7 @@ int main()
     
     solve();
     
-    cout<<max(dp[n][1], dp[n][2]);
+    cout<<dp[n];
     
     return 0;
 }
