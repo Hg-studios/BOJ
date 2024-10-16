@@ -9,12 +9,11 @@ bool visited[201];
 
 // i는 방문하지 않은 노드
 void dfs(int i, vector<vector<int>>& computers){
-    visited[i] = true;
-    
     for(int j=0; j<computers[i].size(); j++) {
         if(computers[i][j]==0) continue;
         if(visited[j]) continue;
         
+        visited[j] = true;
         dfs(j, computers);
     }
 }
@@ -28,6 +27,7 @@ int solution(int n, vector<vector<int>> computers) {
         
         answer++;
         
+        visited[i] = true;
         dfs(i, computers);
     }
     
