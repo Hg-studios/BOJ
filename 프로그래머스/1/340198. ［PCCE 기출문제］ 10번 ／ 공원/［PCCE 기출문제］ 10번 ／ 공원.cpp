@@ -35,6 +35,9 @@ int solution(vector<int> mats, vector<vector<string>> park) {
             
             // 각 칸에서 큰 정사각형부터 넣으면서 확인해봄
             for(int k=0; k<mats.size(); k++) {
+                // 이미 큰 돗자리 값을 구해놨다면 굳이 작은 돗자리 검사하지 않아도 됨
+                if(answer>mats[k]) continue;
+                
                 // 돗자리를 넣을 수 없다면 검사하지 않음 **범위넘어가지않도록주의**
                 if(i+mats[k]>n || j+mats[k]>m) continue;
                 
