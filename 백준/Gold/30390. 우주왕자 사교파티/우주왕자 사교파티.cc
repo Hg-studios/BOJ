@@ -1,39 +1,42 @@
-// https://www.acmicpc.net/problem/30390
-
-#include <algorithm>
-#include <cmath>
 #include <iostream>
-#include <iterator>
-#include <list>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-int main(int argc, char const* argv[]) {
-    std::ios::sync_with_stdio(false);
-    std::cout.tie(nullptr);
+#define ll long long
 
-    auto in = std::istream_iterator<long long>(std::cin);
-    auto const [a, b] = std::minmax({*in, *++in});
-    auto const k = *++in;
-
-    auto divisors = std::list<long long>();
-    for (int i = 1; i <= static_cast<long long>(std::ceil(std::sqrt(a + b))); ++i) {
-        if ((a + b) % i == 0) {
-            divisors.emplace_back(i);
+int main()
+{
+    ll x,y,k; cin>>x>>y>>k;
+    
+    ll a = min(x,y);
+    ll b = max(x,y);
+    
+    ll sum = a+b;
+    
+    vector<ll> v;
+    for(ll i=1; i*i<=sum; i++) {
+        if(sum%i==0) {
+            v.push_back(i);
+            v.push_back(sum/i);
         }
     }
-    for (auto it = std::crbegin(divisors); it != std::crend(divisors);) {
-        auto const divisor = *it++;
-        if (divisor * divisor != a + b) {
-            divisors.emplace_back((a + b) / divisor);
+    sort(v.begin(), v.end(), greater<ll>());
+    
+    // a의 범위 구하기
+    ll mina = a - k;
+    if(mina<0) mina = 0;
+    ll maxa = a + k;
+    if(maxa>sum) maxa = sum;
+    // cout<<mina<<" "<<maxa<<'\n';
+    bool flag = false;
+    for(auto x : v) {
+        if(min(a%x, x-a%x)<=k) {
+            flag=true;
+            cout<<x;
         }
+        if(flag) break;
     }
-
-    for (auto it = std::crbegin(divisors); it != std::crend(divisors); ++it) {
-        auto const r = a % *it;
-        if (std::min(r, *it - r) <= k) {
-            std::cout << *it << std::endl;
-            break;
-        }
-    }
-
+    
     return 0;
 }
