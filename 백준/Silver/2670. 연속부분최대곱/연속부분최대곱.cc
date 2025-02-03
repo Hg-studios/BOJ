@@ -21,7 +21,7 @@ int main()
         // cout<<dp[i]<<" ";
     }
     // cout<<'\n';
-    printf("%.3lf", ans);
+    printf("%.3f", ans);
     
     return 0;
 }
