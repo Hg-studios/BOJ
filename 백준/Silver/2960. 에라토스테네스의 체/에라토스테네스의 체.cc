@@ -7,30 +7,19 @@ int main()
 {
     int n, k; cin>>n>>k;
     vector<int> v(n+1);
-    vector<bool> check(n+1);
+    
+    for(int i=2; i<=n; i++) v[i]=i;
     
     int cnt=0;
-    while(1) {
-        int mn=0;
-        // 지워지지 않은 가장 작은 수 찾기
-        for(int i=2; i<=n; i++) {
-            if(check[i]) continue;
-            mn = i;
-            break;
-        }
-        
-        // 지워지지 않은 가장 작은 수의 배수를 제거
-        for(int i=1; i<=n/mn; i++) {
-            // 이미 삭제가 되어있다면 넘어감
-            if(check[mn*i]) continue;
+    for(int i=2; i<=n; i++) { // 지우려는 수
+        for(int j=i; j<=n; j+=i) { // i의 배수를 삭제할 것임
+            if(!v[j]) continue;// 이미 지워졌다면 건너뜀  
             
-            // 삭제되지 않았으면 삭제해줌
             cnt++;
-            check[mn*i]=true;
+            v[j]=0;
             
-            // k번째 지우는 수가 되었다면 출력 후 끝냄
             if(cnt>=k) {
-                cout<<mn*i;
+                cout<<j;
                 return 0;
             }
         }
