@@ -11,19 +11,13 @@ int solution(vector<int> scoville, int K) {
     
     for(int x : scoville) q.push(x);
     
-    while(1) {
-        if(q.top() >= K) break;
-        
-        if(q.empty() || q.size()<2) {
+    while(!q.empty() && q.top()<K) {
+        if(q.size()<2) {
             answer = -1;
             break;
         }
         
-        
-        
         answer++;
-        
-        
         
         int first = q.top();
         q.pop();
@@ -32,10 +26,6 @@ int solution(vector<int> scoville, int K) {
         
         q.push(first+second*2);
     }
-    // while(!q.empty()) {
-    //     cout<<q.top()<<'\n';
-    //     q.pop();
-    // }
     
     return answer;
 }
