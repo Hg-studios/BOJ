@@ -1,0 +1,13 @@
+SELECT m.MEMBER_NAME, r.REVIEW_TEXT, DATE_FORMAT(r.REVIEW_DATE,'%Y-%m-%d') AS REVIEW_DATE
+FROM MEMBER_PROFILE m
+INNER JOIN REST_REVIEW r
+ON m.MEMBER_ID = r.MEMBER_ID AND m.MEMBER_ID IN 
+(select MEMBER_ID from (
+    select r.MEMBER_ID,
+        RANK() OVER (ORDER BY COUNT(*) DESC) as ranking
+    from REST_REVIEW r
+    group by r.MEMBER_ID
+    ) ranked 
+where ranking = 1
+)
+ORDER BY r.REVIEW_DATE ASC, r.REVIEW_TEXT ASC;
