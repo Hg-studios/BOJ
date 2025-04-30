@@ -28,9 +28,10 @@ int main()
     cout.precision(4);
     
     for(auto& cur : m) {
-        cout<<cur.first<<" "<<(cur.second/(double)total)*(double)100<<'\n';
+        
+        
+        printf("%s %.4f\n", cur.first.c_str(), (cur.second/(double)total)*(double)100);
     }
-    
     
     return 0;
 }
