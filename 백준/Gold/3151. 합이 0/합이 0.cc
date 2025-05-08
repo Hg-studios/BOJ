@@ -20,12 +20,48 @@ int main()
     sort(v.begin(), v.end());
     
     ll ans=0;
-    for(int i=0; i<n-1; i++) {
-        for(int j=i+1; j<n; j++) {
-            int sum = v[i] + v[j];
+    
+    // 하나를 고정해두고
+    // 나머지 두개는 투포인터로 정하기
+    for(int i=0; i<n-2; i++) {
+        int target = -v[i];
+        int start=i+1, end=n-1;
+        
+        while(start<end) {
+            int sum = v[start] + v[end];
             
-            // cout<<v[i]<<" "<<v[j]<<" "<<-sum<<'\n';
-            ans += (upper_bound(v.begin()+j+1, v.end(), -sum) - lower_bound(v.begin()+j+1, v.end(), -sum));
+            // 답에 해당하는 두 수를 구한 경우 
+            if(sum == target) {
+                int vstart=v[start], vend=v[end];
+                
+                // 두 수가 같다면 이 수의 개수만큼의 조합 개수를 구해야 함 
+                if(vstart==vend) {
+                    ans += (end-start+1) * (end-start) / 2;
+                    break; // 답을 찾았으니
+                }
+                // 두 수가 다르다면 각각의 수의 개수를 구해서 그 개수의 곱을 구해야 함
+                else {
+                    int dstart=0, dend=0;
+                    
+                    // 왼쪽 수의 개수
+                    while(v[start]==vstart) {
+                        dstart+=1;
+                        start++;
+                    }
+                    // 오른쪽 수의 개수
+                    while(v[end]==vend) {
+                        dend+=1;
+                        end--;
+                    }
+                    
+                    ans+=dstart*dend;
+                }
+            }
+            // 아직 두 수를 못 구한 경우 
+            else {
+                if(sum>target) end--;
+                else start++;
+            }
         }
     }
     
