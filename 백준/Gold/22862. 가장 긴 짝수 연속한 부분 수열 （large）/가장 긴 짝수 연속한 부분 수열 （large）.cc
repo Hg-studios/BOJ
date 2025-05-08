@@ -4,28 +4,35 @@ using namespace std;
 
 int main()
 {
-    int n,k; cin>>n>>k;
-    vector<int> v(n);
+    ios_base::sync_with_stdio(0);
+    cin.tie(nullptr); cout.tie(nullptr);
     
+    int n, k; cin>>n>>k;
+    
+    vector<int> v(n);
     for(int i=0; i<n; i++) cin>>v[i];
     
-    // 투포인터로 연속한 부분 수열 중 가장 긴 길이 찾기
-    int en=0, ans=-1;
-    int cnt = (v[0]%2); // cnt는 st~en까지 홀수 개수
-    for(int st=0; st<n; st++) {
-        // 해당 st에 대해서 en이 범위를 넘지 않으면서 
-        // k개의 홀수를 넘지 않으면 계속해서 en 한칸씩 늘림
-        while(en<n-1 && cnt+(v[en+1]%2)<=k) {
-            en++;
-            cnt+=v[en]%2;
+    // end는 요소를 추가하는 것
+    // start는 요소를 빼는 것
+    int start=0;
+    int mx=-1;
+    int cnt=0; //홀수 개수 카운트
+    for(int end=0; end<n; end++) {
+        if(v[end]%2==1) cnt++;
+        
+        // 홀수가 k번보다 많으면 
+        // 개수를 줄이면서 홀수 개수가 k 이하가 되도록
+        // start를 키워야함
+        while(cnt>k) {
+            if(v[start]%2==1) cnt--;
+            start++;
         }
         
-        if(cnt<=k) ans = max(ans, en-st+1-cnt);
-        
-        if(v[st]%2) cnt-=1;
+        mx = max(mx, end-start+1-cnt); //end-start+1 에다가 cnt도 함께 지워지므로 cnt개수도 빼줘야함
     }
     
-    cout<<ans;
+    cout<<mx;
+    
     
     return 0;
 }
