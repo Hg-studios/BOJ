@@ -3,7 +3,7 @@
 using namespace std;
 
 bool isSlump(string s) {
-    regex re1("^([DE]F+)+G$");
+    regex re1("([DE]F+)+G");
     return regex_match(s, re1);
 }
 
