@@ -37,7 +37,6 @@ int main()
         
         if(cur.count>t) continue; // T시간 이내에 구출할 수 없으므로 
         
-        // cout<<cur.r<<" "<<cur.c<<'\n';
         if(cur.r==n && cur.c==m) { // 목적지에 도달했다면
             cout<<cur.count;
             return 0;
@@ -49,25 +48,17 @@ int main()
             
             if(nr<1||nc<1||nr>n||nc>m) continue;
             
-            
-            bool nextWeapon = cur.weapon? true : false;
-            
-            if(v[nr][nc]==2) nextWeapon = true;
-            
             // 단순히 한 번 방문한 적이 있을 때 가지 않는다고 하면, 무기가 생기고 나서 그 칸을 재방문했을 때를 처리하지 못함
-            // 따라서 visited를 3차원으로 구성 !! **
+            // ** 따라서 visited를 3차원으로 구성 !! **
             // 무기 보유에 따라 방문 여부를 나눠야 함
-            if(visited[nr][nc][nextWeapon]) continue;
+            if(visited[nr][nc][cur.weapon]) continue;
             
             // 현재 무기를 보유하지 않았을때 벽을 만났다면 continue
             if(v[nr][nc]==1 && !cur.weapon) continue;
             
-            
-            
-            // // 그람이 놓여있는 공간이라면
-            // if(v[nr][nc]==2) {
-            //     nextWeapon = true;
-            // }
+            // 다음 칸의 무기 여부를 확인해야 함
+            bool nextWeapon = cur.weapon? true : false;
+            if(v[nr][nc]==2) nextWeapon = true; // 무기 획득 
             
             visited[nr][nc][nextWeapon] = true;
             q.push({nr,nc,cur.count+1,nextWeapon});
