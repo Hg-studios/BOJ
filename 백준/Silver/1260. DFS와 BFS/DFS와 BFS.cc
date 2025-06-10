@@ -2,67 +2,67 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
-#include <string.h>
 using namespace std;
 
-constexpr int N = 1003;
-int n, m, v;
-vector<int> adj[N]; //2차원
-bool visited[N];
+vector<vector<int>> v;
+vector<bool> visited1, visited2;
 
-//dfs벡터로 하는 방법
-void dfs(int cur) {
-	visited[cur] = 1;
-	cout << cur << " ";
-
-	for (int nxt : adj[cur]) {
-		if (!visited[nxt]) dfs(nxt);
-	}
-
+void dfs(int x) {
+    cout<<x<<" ";
+    
+    for(int nxt : v[x]) {
+        if(visited1[nxt]) continue;
+        
+        visited1[nxt] = true;
+        dfs(nxt);
+    }
 }
-//bfs벡터로 하는 방법
-void bfs(int start) {
-	queue<int> q;
-	q.push(start);
-	visited[start] = 1;
 
-	while (!q.empty()) {
-		int cur = q.front(); q.pop();
-		cout << cur << " ";
 
-		for (int nxt : adj[cur]) {
-			if (!visited[nxt]) {
-				q.push(nxt);
-				visited[nxt] = 1;
-				//cout << cur << " ";
-			}
-		}
-
-	}
-}
-int main() {
-	cin >> n >> m >> v;
-
-	for (int i = 0; i < m; i++) {
-		int a, b; cin >> a >> b;
-		adj[a].push_back(b);
-		adj[b].push_back(a);
-	}
-
-	// 문제에서 
-	// "방문할 수 있는 정점이 여러 개인 경우에는 
-	// 정점 번호가 작은 것을 먼저 방문" 이라고 했기에 정렬해줘야함
-	for (int i = 1; i <= n; i++) {
-		sort(adj[i].begin(), adj[i].end());
-	}
-
-	memset(visited, 0, sizeof(visited));
-	dfs(v);
-
-	cout << "\n";
-
-	memset(visited, 0, sizeof(visited));
-	bfs(v);
-
-	return 0;
+int main()
+{
+    int n,m,s; cin>>n>>m>>s;
+    v.resize(n+1);
+    visited1.resize(n+1);
+    visited2.resize(n+1);
+    
+    while(m--) {
+        int x, y; cin>>x>>y;
+        
+        v[x].push_back(y);
+        v[y].push_back(x);
+    }
+    
+    // 정렬해주기
+    for(int i=1; i<=n; i++) {
+        sort(v[i].begin(), v[i].end());
+    }
+    
+    //dfs
+    visited1[s]=true;
+    dfs(s);
+    
+    cout<<'\n';
+    
+    //bfs
+    queue<int> q;
+    
+    visited2[s] = true;
+    q.push(s);
+    
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
+        
+        cout<<cur<<" ";
+        
+        for(int next : v[cur]) {
+            if(visited2[next]) continue;
+            
+            visited2[next]=true;
+            q.push(next);
+        }
+    }
+    
+    return 0;
 }
