@@ -7,7 +7,7 @@ using namespace std;
 string s;
 ll ans;
 
-void recur(int idx, ll cnt, int cum, int kind, bool inc) {
+void recur(int idx, ll cnt, int mo, int ja, bool inc) {
     if(idx==s.size()) { // 문자열 끝까지 온 상황 
         // H가 없다면 답이 될 수 없음 
         if(inc) ans += cnt; // 최종적으로 답으로 더해줌 
@@ -17,95 +17,38 @@ void recur(int idx, ll cnt, int cum, int kind, bool inc) {
     
     if(s[idx]=='_') {
         // 빈칸에 알파벳을 넣어줌
-        // 알파벳 넣고 나서 조건 부합한지 확인해주기!!
         
-        if(idx==0) {
-            // 모음 넣기
-            recur(idx+1, cnt*5, 1, 0, inc);
-            // L 넣기
-            recur(idx+1, cnt, 1, 1, true);
-            // 나머지 자음 넣기
-            recur(idx+1, cnt*20, 1, 1, inc);
-        }
+        // 1. 모음을 넣을 수 있는 경우 
+        // 모음이 2개 이상일 때 빼고 가능
+        bool mo_avil = true;
+        if(mo>=2) mo_avil = false;
+        // 어차피 모음이 1개였거나 자음이었거나 모음+1이 되는 건 똑같음 
+        if(mo_avil) recur(idx+1, cnt*5, mo+1, 0, inc);
         
-        else {
-            // 1. 빈칸에 모음 넣기
-            // 이전에 연속한 알파벳이 모음이면서 1개 이하거나
-            if(kind==0 && cum<=1) recur(idx+1, cnt*5, cum+1, kind, inc);
-            // 자음인 경우 진행 가능
-            if(kind==1) recur(idx+1, cnt*5, 1, 0, inc);
-            
-            
-            // 2. 빈칸에 H 넣기
-            // 이전에 모음이 연속됐 경우 진행 가능
-            if(kind==0) recur(idx+1, cnt, 1, 1, true);
-            // 이전에 자음이 연속됐다면
-            if(kind==1 && cum<=1) recur(idx+1, cnt, cum+1, 1, true);
-            
-            // 3. 빈칸에 나머지 자음 넣기
-            // 이전에 모음이 연속됐거나 맨처음칸이 빈칸인 경우 진행 가능
-            if(kind==0) recur(idx+1, cnt*20, 1, 1, inc);
-            // 이전에 자음이 연속됐다면 
-            if(kind==1 && cum<=1) recur(idx+1, cnt*20, cum+1, 1, inc);
-        }
-        
-        
-    }
-    // 첫번째가 빈칸이 아니면서 알파벳인 경우 
-    else if(idx==0) {
-        char c = s[idx];
-        // 현재 알파벳이 모음인 경우
-        if(c=='A' || c=='E' || c=='I' || c=='O' || c=='U') {
-            recur(idx+1, cnt, 1, 0, inc);
-        }
-        else if(c=='L') {
-            recur(idx+1, cnt, 1, 1, true);
-        }
-        else {
-            recur(idx+1, cnt, 1, 1, inc);
+        // 2. 자음을 넣을 수 있는 경우 
+        bool ja_avil = true;
+        if(ja>=2) ja_avil = false;
+        if(ja_avil) {
+            // L을 넣는 경우
+            recur(idx+1, cnt, 0, ja+1, true);
+            recur(idx+1, cnt*20, 0, ja+1, inc);
         }
     }
     
     // 알파벳이 온 상황
     else {
         char c = s[idx];
+        
         // 현재 알파벳이 모음인 경우
         if(c=='A' || c=='E' || c=='I' || c=='O' || c=='U') {
-            // 여태까지 연속해오던 알파벳이 모음이라면
-            if(kind==0) {
-                // 이미 모음 2개가 연속한 상황 -> 더이상 진행 불가
-                if(cum>=2) return;
-                // 모음이 1개 연속한 상황 -> 연속된 알파벳 종류 바뀌지 않음 
-                else recur(idx+1, cnt, cum+1, kind, inc);
-            }
-            // 여태까지 연속해오던 알파벳이 자음이라면
-            else {
-                recur(idx+1, cnt, 1, 1-kind, inc);
-            }
+            if(mo==2) return;
+            recur(idx+1, cnt, mo+1, 0, inc);
         }
-        // 현재 알파벳이 H인 경우
-        else if(c=='L') {
-            // 연속해오던 알파벳이 모음이라면
-            if(kind==0) {
-                recur(idx+1, cnt, 1, 1-kind, true);
-            }
-            // 연속해오던 알파벳이 자음이라면
-            else {
-                if(cum>=2) return;
-                else recur(idx+1, cnt, cum+1, kind, true);
-            }
-        }
-        // 현재 알파벳이 나머지 자음인 경우
+        // 자음인 경우
         else {
-            // 연속해오던 알파벳이 모음이라면
-            if(kind==0) {
-                recur(idx+1, cnt, 1, 1-kind, inc);
-            }
-            // 연속해오던 알파벳이 자음이라면
-            else {
-                if(cum>=2) return;
-                else recur(idx+1, cnt, cum+1, kind, inc);
-            }
+            if(ja==2) return;
+            if(c=='L') recur(idx+1, cnt, 0, ja+1, true);
+            else recur(idx+1, cnt, 0, ja+1, inc);
         }
     }
 }
@@ -117,11 +60,11 @@ int main()
     
     cin>>s;
 
-    recur(0, 1, 0, 0, false); // 인덱스 위치, 현재까지 경우의 수, 연속해서 오고 있는 문자의 누적 수, 연속한 문자 종류(0,1), H 포함 여부부
-    
+    recur(0, 1, 0, 0, false); // 인덱스 위치, 현재까지 경우의 수, 연속한 모음 개수, 연속한 자음 개수, H 포함 여부
+
     // 문자열 종류
-    // 0 : 모음 (5개)
-    // 1 : 자자음 (21개)
+    // 0 : 자음 (5개)
+    // 1 : 모음 (21개)
     cout<<ans;
     
     return 0;
