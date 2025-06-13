@@ -1,5 +1,5 @@
 #include <iostream>
-#include <sstream>
+#include <string>
 #include <map>
 using namespace std;
 
@@ -15,24 +15,12 @@ int main()
     while(n--) {
         string s; cin>>s;
         
-        // . 을 기준으로 토크나이징하기
-        istringstream input;
-        input.str(s);
-        
-        int cnt=0;
-        for(string line; getline(input, line, '.'); ) {
-            if(cnt%2==1) {
-                // cout<<line<< " ";
-                m[line]++;
-            }
-            
-            cnt++;
-        }
+        int idx = s.find('.');
+        string ss = s.substr(idx+1);
+        m[ss]++;
     }
     
-    for(auto it = m.begin(); it!=m.end(); ++it) {
-        cout<<it->first<<" "<<it->second<<'\n';
-    }
+    for(auto x : m) cout<<x.first<<" "<<x.second<<'\n';
     
     return 0;
 }
