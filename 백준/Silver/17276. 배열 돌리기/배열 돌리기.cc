@@ -57,6 +57,9 @@ void negative(vector<vector<int>>& v, int n) {
 
 
 int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(nullptr); cout.tie(nullptr);
+    
     int t; cin>>t;
     
     while(t--) {
