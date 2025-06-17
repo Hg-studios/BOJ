@@ -54,19 +54,19 @@ int main()
         
         int dis=0;
         
-        // 모음인 경우
-        if((p.R==1 && p.C>=6) || (p.R==2 && p.C>=6) || (p.R==3 && p.C>=5)) {
-            // 오른손 손가락 움직이기
-            dis = abs(r.R - p.R) + abs(r.C - p.C);
-            ans += dis; 
-            r = p;
-        }
         // 자음인 경우
-        else {
+        if((p.R==1 && p.C<=5) || (p.R==2 && p.C<=5) || (p.R==3 && p.C<=4)) {
             // 왼손 손가락 움직이기
             dis = abs(l.R - p.R) + abs(l.C - p.C);
             ans += dis;
             l = p;
+        }
+        // 자음인 경우
+        else {
+            // 오른손 손가락 움직이기
+            dis = abs(r.R - p.R) + abs(r.C - p.C);
+            ans += dis; 
+            r = p;
         }
         // 움직이고 나서 누르는 데에도 1초 걸린
         ans++;
