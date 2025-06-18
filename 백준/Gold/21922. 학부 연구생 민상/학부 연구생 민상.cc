@@ -70,7 +70,7 @@ int main()
                 
                 // **중요**
                 // 다시 제자리로 왔다면 무한 뻉뺑이 돌게 되는 것이므로 멈추기
-                if(nx==x && ny==y) break;
+                //if(nx==x && ny==y) break;
                 
                 if(v[nx][ny]==9) break;
                 
