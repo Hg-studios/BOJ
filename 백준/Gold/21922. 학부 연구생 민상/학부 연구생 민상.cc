@@ -36,7 +36,7 @@ int main()
         }
     }
     
-    int cnt=0; // 총 몇 칸에 방문했는지 저장
+    // int cnt=0; // 총 몇 칸에 방문했는지 저장
     // vector<vector<bool>> visited(n, vector<bool> (m,0));
     // 각 선풍기 4방향으로 돌리기
     for(auto p : pan) {
@@ -123,6 +123,7 @@ int main()
             //     cout<<'\n';
             
             // 최적화 - 이미 다 찼으면 더이상 돌지 않도록
+            /*
             cnt=0;
             for(int i=0; i<n; i++){
                 for(int j=0; j<m; j++) {
@@ -130,15 +131,16 @@ int main()
                 }
             }
             if(cnt>=n*m) break;
+            */
         }
     }
     
-    // int cnt=0;
-    // for(int i=0; i<n; i++){
-    //     for(int j=0; j<m; j++) {
-    //         if(visited[i][j]) cnt++;
-    //     }
-    // }
+    int cnt=0;
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++) {
+            if(visited[i][j]) cnt++;
+        }
+    }
     
     cout<<cnt;
     
