@@ -53,20 +53,20 @@ int main()
     
     vector<state> v(n);
     
-    int mxHeight = 0;
-    int mxWidth = 0;
-    int mnWidth = 99999;
+    int mxC = 0;
+    int mxR = 0;
+    int mnR = 99999;
     
     for(int i=0; i<n; i++) {
         int x,y; cin>>x>>y;
         
         v[i] = {x,y};
-        if(y>mxWidth) mxWidth=y; 
+        if(y>mxR) mxR=y; 
     }
     
     sort(v.begin(), v.end(), cmp);
     
-    mnWidth = v[0].start;
+    mnR = v[0].start;
     
     bool check[1001][366] = {false, }; // 크기가 큰 배열은 동적할당 말고 정적할당이 시간복잡도에 더 효율적 
     
@@ -75,36 +75,33 @@ int main()
         for(int i=1; i<=1000; i++) {
             // i번째 줄에 cur을 넣을 수 있는지 확인 
             if(solve(i, check, cur)) {
-                if(i> mxHeight) mxHeight = i;
+                if(i> mxC) mxC = i;
                 break;
             }
         }
     }
     
     // 이어져있는지 확인하기
-    // 시작은 mnWidth 이고 전날의 상태를 확인하기
-    // 현재 내가 일정이 없다면? 앞에 연속해서 왔던 
-    
-    // 현재 내가 일정이 있다면 나의 앞의 일정도 확인해서 연속한지 확인하기 
-    
-    bool found = false;
     int maxHeight = 0;
     int maxWidth = 0;
     int h=-1;
     long long ans = 0;
     
-    for(int i=mnWidth; i<=mxWidth; i++) {
+    for(int i=mnR; i<=mxR; i++) {
         // 높이만큼 확인하기 
         int highest = -1;
-        for(int j=1; j<=mxHeight; j++) {
+        for(int j=1; j<=mxC; j++) {
             if(check[j][i]) {
                 highest = j;
             }
         }
+        // 끊긴 경우
         if (highest != -1) {
             maxHeight = max(maxHeight, highest);
             maxWidth += 1;
-        } else {
+        } 
+        // 연속된 경우 
+        else {
             ans += maxHeight * maxWidth;
             maxHeight = 0;
             maxWidth = 0;
