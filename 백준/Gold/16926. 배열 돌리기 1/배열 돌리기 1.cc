@@ -39,6 +39,9 @@ void rotate(int cnt) {
 
 int main()
 {
+    ios::sync_with_stdio(0);
+    cin.tie(nullptr); cout.tie(nullptr);
+    
     cin>>n>>m>>r;
     
     // vector<vector<int>> v(n, vector<int> (m));
