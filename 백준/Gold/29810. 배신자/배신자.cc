@@ -1,62 +1,72 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int N, M;
-    cin >> N >> M;
-    vector<vector<int>> adj(N + 1);
-    for (int i = 0; i < M; i++) {
-        int A, B;
-        cin >> A >> B;
-        adj[A].push_back(B);
-        adj[B].push_back(A);
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(nullptr); cout.tie(nullptr);
+    
+    int n; cin>>n;
+    vector<vector<int>> adj(n+1);
+    
+    int m; cin>>m;
+    while(m--) {
+        int a,b; cin>>a>>b;
+        
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
-    int X;
-    cin >> X;
-
-    // X의 직속 친구 표시
-    vector<bool> isNeighbor(N + 1, false);
-    for (int v : adj[X]) {
-        isNeighbor[v] = true;
+    
+    int x; cin>>x;
+    
+    // 배신자와 친구 관계인 사람 표시
+    vector<bool> check(n+1, false);
+    for(int next : adj[x]) {
+        check[next]=true;
     }
-
-    vector<bool> visited(N + 1, false);
-    int ans = 1;  // 최소 1명
-
-    // X를 제거한 뒤의 각 컴포넌트 탐색
-    for (int v = 1; v <= N; v++) {
-        if (v == X || visited[v]) continue;
-        int compSize = 0;
-        int nbCnt = 0;
+    
+    int ans = 1; // 최소 1명
+    vector<bool> visited(n+1, false);
+    // x를 제거한 뒤 탐색 시작
+    for(int i=1; i<=n; i++) {
+        if(i==x) continue;
+        if(visited[i]) continue;
+        
+        int bet=0; // 배신자와 친구인 사람 세기
+        int cnt=0; // 현재 파의 총 명 수
+        
         queue<int> q;
-
-        visited[v] = true;
-        q.push(v);
-
-        while (!q.empty()) {
-            int u = q.front();
+        
+        if(check[i]) bet++;
+        cnt++;
+        visited[i]=true;
+        q.push(i);
+        
+        while(!q.empty()) {
+            int cur = q.front();
             q.pop();
-            compSize++;
-            if (isNeighbor[u]) nbCnt++;
-            for (int w : adj[u]) {
-                if (w == X || visited[w]) continue;
-                visited[w] = true;
-                q.push(w);
+            
+            for(int next : adj[cur]) {
+                if(next==x) continue;
+                if(visited[next]) continue;
+                
+                if(check[next]) bet++;
+                cnt++;
+                visited[next]=true;
+                q.push(next);
             }
         }
-
-        int groupSize = compSize;
-        if (nbCnt == 1) {
-            // 배신자와 친구인 유일한 한 명이 있으므로 함께 모일 수 있음
-            groupSize = compSize + 1;
-        }
-        // nbCnt >= 2 이면 배신자가 축출되어 compSize 그대로
-        ans = max(ans, groupSize);
+        
+        // 배신자와 친구인 유일한 한 명이 있으므로 함께 모일 수 있음
+        if(bet==1) cnt+=1;
+        // bet>=2 이면 배신자가 퇴출당함 -> 따라서 현재 구해놓은 cnt 그대로임 
+        
+        if(ans<cnt) ans = cnt;
     }
-
-    cout << ans << '\n';
+    
+    cout<<ans;
+    
     return 0;
 }
