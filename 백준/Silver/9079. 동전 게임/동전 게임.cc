@@ -37,7 +37,7 @@ int main()
         // cout<<x<<'\n';
         
         // bfs로 가능한 경우 탐색하기 (최단 경로이므로)
-        vector<bool> visited(512, false); // 2^8-1 (111 111 111) 까지 인덱스가 있음
+        vector<bool> visited(512, false); // 2^9-1 (111 111 111) 까지 인덱스가 있음
         queue<int> q;
         bool success = false;
         int ans=-1;
@@ -47,8 +47,8 @@ int main()
         q.push(x);
         
         while(!q.empty() && !success) {
+            cnt++;
             int sz = q.size();
-                cnt++;
             
             while(sz--) {
                 auto cur = q.front();
@@ -70,10 +70,8 @@ int main()
                 }
             }
         }
-        
         cout<<(ans==-1? -1 : ans-1)<<'\n';
     }
-    
     
     return 0;
 }
