@@ -5,39 +5,45 @@
 
 using namespace std;
 
-string binary(int n) {
-    string s;
-    while(n>1) {
-        s+=to_string(n%2);
+string to_binary (int n) {
+    string tmp="";
+    while(1) {
+        
+        tmp = to_string(n%2) + tmp;
         n/=2;
+        
+        if(n==0) {
+            break;
+        }
     }
-    s+=to_string(n);
-    
-    reverse(s.begin(), s.end());
-    
-    return s;
+    // cout<<tmp;
+    return tmp;
 }
 
 vector<int> solution(string s) {
     vector<int> answer;
     
-    int cnt=0;
     int turn=0;
+    int cnt=0;
+    
+    string cur = s;
+    
     while(1) {
         turn++;
-        int tmp=0;
-        for(int i=0; i<s.size(); i++) {
-            if(s[i]=='1') tmp+=1;
-            else cnt++;    
-        }
-        //길이가 1이되면 중지
-        if(tmp==1) break;
         
-        // tmp만큼의 길이를 이진 변환해야 함
-        s = binary(tmp);
-        // cout<<s<<" ";
+        int tmp = 0;
+        
+        for(auto c : cur) {
+            if(c=='0') tmp++;
+        }
+        
+        cnt+=tmp;
+        
+        cur = to_binary(cur.size() - tmp);
+        
+        if(cur=="1") break;
     }
-    // cout<<binary(8)<<" ";
+    
     answer.push_back(turn);
     answer.push_back(cnt);
     
