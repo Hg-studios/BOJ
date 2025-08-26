@@ -4,21 +4,17 @@
 using namespace std;
 
 int solution(int n) {
-    int answer = 0;
+    int num = (n+1)/2;
+    int sum=0, answer=1, j=1;
     
-    for(int i=1; i<=n; i++) {
-        int tmp = 0;
+    for(int i=1; i<=num; i++) {
+        sum += i;
         
-        for(int j=i; j<=n; j++) {
-            tmp += j;
-            if(tmp==n) {
-                answer++;
-                break;
-            }
-            if(tmp>n) {
-                break;
-            }
+        if(sum>=n) {
+            while(sum>n) sum -= j++;
+            if(sum==n) answer++;
         }
     }
-    return answer;
+    
+    return n!=1 ? answer : 1;
 }
