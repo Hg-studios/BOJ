@@ -3,39 +3,44 @@
 #include <cctype>
 #include <map>
 #include <algorithm>
-
+#include <sstream>
+#include <iostream>
 using namespace std;
 
-bool cmp (pair<int,int>& a, pair<int,int>& b) {
-    return a.second > b.second;
-}
 
 vector<int> solution(string s) {
     vector<int> answer;
-    map<int, int> m;
+    map<string, int> m;
     
-    for(int i=2; i<s.size(); i++) {
-        if(isdigit(s[i])) {
-            int num=0;
+    string tmp;
+    for(int i=0; i<s.size(); i++) {
+        // 숫자면 tmp에 더해나감
+        if('0'<=s[i] && s[i]<='9') tmp+=s[i];
+        
+        // 숫자가 아니라면 tmp는 초기화
+        else {
+            // 여태까지 저장되어있던 tmp가 있다면 map에 저장해줌
+            if(tmp!="") m[tmp]++;
             
-            // 2자리 이상을 처리해야 함
-            while(isdigit(s[i])) {
-                num *= 10;
-                num += (s[i]-'0');
-                i++;
-            }
-            
-            m[num]++;
+            tmp = "";
         }
     }
     
-    vector<pair<int,int>> v(m.begin(), m.end());
-    sort(v.begin(), v.end(), cmp);
+    if(tmp!="") m[tmp]++;
     
-    for(int i=0; i<v.size(); i++) {
-        answer.push_back(v[i].first);
+    vector<pair<int,string>> v;
+    
+    for(auto x : m) {
+        // cout<<x.first<<" "<<x.second<<'\n';
+        v.push_back({x.second, x.first});
     }
     
+    sort(v.begin(), v.end(), greater<>());
+    
+    for(auto x : v) {
+        cout<<x.first<<" "<<x.second<<'\n';
+        answer.push_back(stoi(x.second));
+    }
     
     return answer;
 }
