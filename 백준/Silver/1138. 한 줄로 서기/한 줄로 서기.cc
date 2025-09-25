@@ -3,55 +3,28 @@
 #include <algorithm>
 using namespace std;
 
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    
-    int n; cin>>n;
-    
-    vector<int> v(n,0);
-    for(int i=0; i<n; i++) cin>>v[i];
-    
-    // 순열 만들어야 함
-    vector<int> order(n);
-    for(int i=0; i<n; i++) order[i]=i+1;
-    
-    do {
-        // for(auto x : order) cout<<x<<" ";
-        // cout<<'\n';
-        
-        // 해당 순서에서 왼쪽에 나보다 큰 숫자가 몇 개있는지 확인
-        vector<int> cnt(n+1,0);
-        
-        for(int i=0; i<n; i++) {
-            for(int j=0; j<i; j++) {
-                if(order[j]>order[i]) cnt[order[i]]++;
-            }
-        }
-        
-        // cnt가 답이랑 같은지 확인
-        bool flag = true;
-        for(int i=0; i<n; i++) {
-            if(v[i]!=cnt[i+1]) {
-                flag = false;
-                break;
-            }
-        }
-        
-        // for(auto x : cnt) cout<<x<<" ";
-        // cout<<'\n';
-        // for(auto x : order) cout<<x<<" ";
-        // cout<<'\n';
-        
-        if(flag) {
-            for(auto x : order) cout<<x<<" ";
-            break;
-        }
-        
-        // cout<<'\n';
-        // cout<<'\n';
-    } while(next_permutation(order.begin(), order.end()));
-    
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N; 
+    if (!(cin >> N)) return 0;
+    vector<int> L(N);
+    for (int i = 0; i < N; ++i) cin >> L[i];
+
+    vector<int> ans; 
+    ans.reserve(N);
+
+    // 키가 큰 사람부터 삽입
+    for (int h = N; h >= 1; --h) {
+        int idx = L[h - 1];              // 왼쪽에 있어야 하는 큰 사람 수
+        ans.insert(ans.begin() + idx, h); // 그 위치에 h 삽입
+    }
+
+    for (int i = 0; i < N; ++i) {
+        if (i) cout << ' ';
+        cout << ans[i];
+    }
+    cout << '\n';
     return 0;
 }
