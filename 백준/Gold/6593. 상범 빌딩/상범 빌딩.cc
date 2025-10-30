@@ -1,76 +1,95 @@
 #include <iostream>
-#include <algorithm>
 #include <queue>
 using namespace std;
-#define X first
-#define Y second 
 
-int l,r,c;
-int el, er, ec; //탈출가능한 출구 좌표
-char building[32][32][32];
-int visited[32][32][32]; //-1 초기화, 0부터 거리측정 
-queue<pair<pair<int,int>,int>> q; //3차원 큐 생성
-//queue<tuple<int,int,int>> q; //3차원 큐 생성
+struct node {
+    int l,r,c;
+};
 
-int dx[6] = {1,-1,0,0,0,0};
-int dy[6] = {0,0,-1,1,0,0};
-int dz[6] = {0,0,0,0,-1,1};
+int dx[] = {1,-1,0,0,0,0};
+int dy[] = {0,0,1,-1,0,0};
+int dz[] = {0,0,0,0,-1,1};
 
-void BFS(){
-    while(!q.empty()){
-        auto cur = q.front();
-        q.pop();
-        //int curZ, curX, curY;
-        //tie(curZ, curX, curY) = cur;
-
-        for(int dir=0; dir<6; dir++){
-            
-            int nz = cur.X.X + dz[dir];
-            int nx = cur.X.Y + dx[dir];
-            int ny = cur.Y + dy[dir];
-            // int nz = curZ + dz[dir];
-            // int nx = curX + dx[dir];
-            // int ny = curY + dy[dir];
-
-            if(nz<0||nz>=l||nx<0||nx>=r||ny<0||ny>=c) continue;
-            if(visited[nz][nx][ny]!=-1||building[nz][nx][ny]=='#') continue;
-            
-            visited[nz][nx][ny] = visited[cur.X.X][cur.X.Y][cur.Y]+1;
-            q.push({{nz,nx},ny});
-        }
-    }
-}
-
-int main(){
+int main()
+{
     ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    while(1){
-        cin>>l>>r>>c;
-        if(!(l|r|c)) break;
-
-        //입력 받기
-        for(int k=0; k<l; k++){
-            for(int i=0; i<r; i++){
-                for(int j=0; j<c; j++){
-                    cin>>building[k][i][j]; //입력받기
-                    visited[k][i][j]=-1; //visited배열 -1로 초기화
-                    if(building[k][i][j]=='S') { //출발점 큐에 넣기 
-                        q.push({{k,i},j});
-                        visited[k][i][j]=0; //출발점은 dist가 0부터 시작
-                    }
-                    if(building[k][i][j]=='E') { //출구 좌표 저장 
-                        el = k; er = i; ec = j;
+    cin.tie(nullptr);
+    
+    while(1) {
+        int l,r,c; cin>>l>>r>>c;
+        if(l==0 && r==0 && c==0) break;
+        
+        char arr[32][32][32];
+        int dist[32][32][32];
+        queue<node> q;
+        
+        // visited 배열 -1로 초기화
+        for(int i=0; i<l; i++) {
+            for(int j=0; j<r; j++) {
+                for(int k=0; k<c; k++) {
+                    dist[i][j][k]=-1;
+                }
+            }
+        }
+        
+        // 입력받기 & 시작점 찾기
+        for(int i=0; i<l; i++) {
+            for(int j=0; j<r; j++) {
+                string str; cin>>str;
+                for(int k=0; k<str.size(); k++) {
+                    arr[i][j][k]=str[k];
+                    
+                    if(arr[i][j][k]=='S') {
+                        dist[i][j][k]=0;
+                        q.push({i,j,k});
                     }
                 }
             }
         }
-        BFS();
-
-        if(visited[el][er][ec]==-1) cout<<"Trapped!"<<'\n';
-        else cout<<"Escaped in "<< visited[el][er][ec] <<" minute(s)."<<'\n';
+        
+        
+        // 입력 잘 받았나 검사용 
+        // for(int i=0; i<l; i++) {
+        //     for(int j=0; j<r; j++) {
+        //         for(int k=0; k<c; k++) {
+        //             cout<<arr[i][j][k]<<" ";
+                    
+        //         }
+        //         cout<<'\n';
+        //     }
+        //     cout<<'\n';
+        // }
+        
+        bool flag=false; // 탈출구 찾는지 확인
+        
+        while(!q.empty()) {
+            auto cur = q.front();
+            q.pop();
+            
+            // 탈출구를 찾은 경우
+            if(arr[cur.l][cur.r][cur.c]=='E') {
+                cout<<"Escaped in "<<dist[cur.l][cur.r][cur.c]<<" minute(s)."<<'\n';
+                flag=true;
+                break;
+            }
+            
+            // 다음 이동할 칸 찾기
+            for(int dir=0; dir<6; dir++) {
+                int nl = cur.l + dz[dir];
+                int nr = cur.r + dx[dir];
+                int nc = cur.c + dy[dir];
+                
+                if(nl<0||nr<0||nc<0||nl>=l||nr>=r||nc>=c) continue; // 범위 벗어남
+                if(dist[nl][nr][nc]!=-1) continue; // 이미 방문한 경우
+                if(arr[nl][nr][nc]=='#') continue; // 벽이면 통과 못함
+                
+                dist[nl][nr][nc] = dist[cur.l][cur.r][cur.c]+1;
+                q.push({nl,nr,nc});
+            }
+        }
+        
+        if(!flag) cout<<"Trapped!"<<'\n';
     }
     
     return 0;
 }
-
